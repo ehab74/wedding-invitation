@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Ehab & Alia — Wedding Invitation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Cinzel+Decorative:wght@400&display=swap" rel="stylesheet" />
+
+  <style>
+    *,
+    *::before,
+    *::after { 
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    } 
+
+    :root {
+      /* envelope palette */
+      --env-bg: #8d7362;
+      --env-bg-deep: #775f50;
+      --env-bg-dark: #664f42;
+      --env-highlight: #9e8371;
+      --env-line: rgba(255, 245, 230, 0.12);
+      --env-shadow: rgba(32, 19, 12, 0.22);
+      --env-shadow-strong: rgba(20, 12, 7, 0.34);
+
+      /* seal / invitation palette */
+      --gold: #c9a84c;
+      --gold-light: #e8cf89;
+      --gold-dark: #8a6a22;
+      --cream: #f5f0e8;
+      --cream-dark: #ede4d0; 
+      --ink: #2a1f0f;
+      --ink-light: #4a3520;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      background: #1e1612;
+    }
+
+    body {
+      position: relative;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 30%),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 40%),
+        linear-gradient(180deg, #2d211b 0%, #170f0c 100%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ══════════════════════════════════════
+       FULL SCREEN ENVELOPE
+    ══════════════════════════════════════ */
+    #stage {
+      position: fixed; 
+      inset: 0;
+      z-index: 10;
+      perspective: 1800px;
+      perspective-origin: 50% 50%;
+    }
+
+    #envelope-wrapper {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #envelope {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, var(--env-highlight) 0%, var(--env-bg) 45%, var(--env-bg-deep) 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 25px 50px rgba(255,255,255,0.04),
+        inset 0 -30px 60px rgba(0,0,0,0.10);
+    }
+
+    #envelope::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(255,255,255,0.015) 3px, 
+          rgba(255,255,255,0.015) 4px
+        ),
+        repeating-linear-gradient(
+          90deg, 
+          transparent,
+          transparent 4px,
+          rgba(0,0,0,0.012) 4px,
+          rgba(0,0,0,0.012) 5px
+        );
+      opacity: 0.38;
+      pointer-events: none;
+    }
+
+    /* imitation phone notch / screen feel */ 
+    /*#screen-notch {*/
+    /*  position: absolute;*/
+    /*  top: 14px;*/
+    /*  left: 50%;*/
+    /*  transform: translateX(-50%);*/
+    /*  width: 110px;*/
+    /*  height: 24px;*/
+    /*  border-radius: 999px;*/
+    /*  background: rgba(0, 0, 0, 0.78);*/
+    /*  z-index: 20;*/
+    /*  box-shadow: 0 2px 8px rgba(0,0,0,0.28);*/
+    /*  pointer-events: none;*/
+    /*}*/
+
+    /* hidden insert behind envelope */
+    #cream-insert {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      opacity: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 12%),
+        linear-gradient(180deg, #f4ede3 0%, #e8ddce 100%);
+      box-shadow: 
+        inset 0 0 0 1px rgba(201,168,76,0.08),
+        inset 0 8px 22px rgba(255,255,255,0.12);
+      transition: opacity 0.35s ease;
+    }
+
+    #cream-insert::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      opacity: 0.5;
+    }
+
+    #cream-insert.visible {
+      opacity: 1;
+    }
+
+    /* cinematic under-shadow */
+    #envelope-shadow {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at center, rgba(0,0,0,0) 54%, rgba(0,0,0,0.16) 100%);
+    }
+
+    /* left panel (below) */
+    .env-panel {
+      position: absolute;
+      inset: 0;
+      will-change: transform, opacity, filter;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+
+    #panel-left {
+      z-index: 4;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 30%),
+        linear-gradient(180deg, #8f7564 0%, #7d6555 55%, #6d5749 100%);
+      clip-path: polygon(0% 0%, 80% 0%, 50% 50%, 80% 100%, 0% 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.03),
+        0 0 25px rgba(0,0,0,0.06); 
+    } 
+
+    #panel-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      /*background:*/
+      /*  linear-gradient(130deg, transparent 0%, transparent 50%, rgba(255,255,255,0.08) 51% , transparent 52%),*/
+      /*  linear-gradient(0deg, transparent, transparent 65%, rgba(0,0,0,0.08) 100%);*/
+      opacity: 0.75;
+    } 
+
+    /* right panel (above) */
+    #panel-right {
+      z-index: 6;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 34%), 
+        linear-gradient(180deg, #99806d 0%, #876e5d 55%, #755e4f 100%); 
+      clip-path: polygon(80% 0%, 100% 0%, 100% 100%, 80% 100%, 50% 50%);
+      box-shadow:
+        -8px 0 26px rgba(0,0,0,0.12),
+        inset 0 0 0 1px rgba(255,255,255,0.035); 
+    } 
+
+    #panel-right::before {
+      content: '';  
+      position: absolute;
+      inset: 0;
+      /*background:*/
+      /*  linear-gradient(50deg, transparent 0%, transparent 48%, rgba(255,255,255,0.08) 49%, transparent 50%),*/
+        /*linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));*/
+      /*opacity: 0.85;*/
+    }
+
+    /* seam lines */
+    .panel-crease {
+      position: absolute;
+      z-index: 8;
+      width: 1px;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(255,245,230,0.20),
+        rgba(255,245,230,0.08),
+        transparent
+      );
+      filter: blur(0.2px);
+    }
+
+    #crease-left {
+      top: -5%;
+      left: 73%;
+      height: 110%;
+      transform: rotate(31deg);
+      transform-origin: center center;
+    }
+
+    #crease-right {
+      top: -5%;
+      left: 26%;
+      height: 110%;
+      transform: rotate(-31deg);
+      transform-origin: center center;
+      z-index: 9;
+    }
+
+    /* subtle central glow around seal area */
+    #seal-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 170px;
+      height: 170px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 7;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 35%, rgba(255,255,255,0) 75%);
+      filter: blur(8px);
+    }
+
+    /* wax seal */
+    #wax-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 86px;
+      height: 86px;
+      transform: translate(-50%, -50%);
+      z-index: 12;
+      cursor: pointer;
+      transition:
+        opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+      filter:
+        drop-shadow(0 6px 14px rgba(0,0,0,0.42))
+        drop-shadow(0 0 18px rgba(255,214,120,0.16));
+    }
+
+    #wax-seal.dissolve {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.45) !important;
+    }
+
+    /* tap hint */
+    #tap-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 14;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(8px, 2.2vw, 11px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255, 240, 220, 0.75);
+      white-space: nowrap;
+      pointer-events: none;
+      animation: breathe 2.8s ease-in-out infinite;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.32; }
+      50% { opacity: 0.95; }
+    }
+
+    /* panel opening animations */
+    #envelope-wrapper.opening #panel-left {
+      animation: slideLeftPanel 1.8s cubic-bezier(0.18, 0.78, 0.18, 1) forwards;
+    }
+
+    #envelope-wrapper.opening #panel-right {
+      animation: slideRightPanel 1.8s cubic-bezier(0.18, 0.78, 0.18, 1) forwards;
+    }
+
+    #envelope-wrapper.opening #crease-left,
+    #envelope-wrapper.opening #crease-right,
+    #envelope-wrapper.opening #seal-glow {
+      animation: creaseFade 1.1s ease forwards;
+    }
+
+    #envelope-wrapper.opening #envelope-shadow {
+      animation: overallSoftFade 1.8s ease forwards;
+    }
+
+    @keyframes slideLeftPanel {
+      0% {
+        transform: translateX(0) scale(1) rotateY(0deg);
+        opacity: 1;
+        filter: blur(0px);
+      }
+      16% {
+        transform: translateX(-2%) scale(1.01) rotateY(2deg);
+        opacity: 1;
+        filter: blur(0px);
+      }
+      55% {
+        transform: translateX(-42%) scale(1.03) rotateY(4deg);
+        opacity: 0.92;
+        filter: blur(0.4px);
+      }
+      100% {
+        transform: translateX(-115%) scale(1.05) rotateY(8deg);
+        opacity: 0;
+        filter: blur(4px);
+      }
+    }
+
+    @keyframes slideRightPanel {
+      0% {
+        transform: translateX(0) scale(1) rotateY(0deg);
+        opacity: 1;
+        filter: blur(0px);
+      }
+      12% {
+        transform: translateX(3%) scale(1.015) rotateY(-2deg);
+        opacity: 1;
+        filter: blur(0px);
+      }
+      55% {
+        transform: translateX(40%) scale(1.035) rotateY(-4deg);
+        opacity: 0.92;
+        filter: blur(0.45px);
+      }
+      100% {
+        transform: translateX(118%) scale(1.06) rotateY(-8deg);
+        opacity: 0;
+        filter: blur(4px);
+      }
+    }
+
+    @keyframes creaseFade {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    @keyframes overallSoftFade {
+      from { opacity: 1; }
+      to { opacity: 0.2; }
+    }
+
+    #envelope-wrapper.fade-out {
+      animation: envFade 0.95s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      pointer-events: none;
+    }
+
+    @keyframes envFade {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(1.01);
+      }
+    }
+
+    /* ══════════════════════════════════════
+       INVITATION PAGE (UNCHANGED)
+    ══════════════════════════════════════ */
+    #invitation {
+      position: fixed; 
+      inset: 0;
+      z-index: 20;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: none;
+      background: var(--cream);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #invitation.show {
+      display: block;
+      animation: invReveal 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes invReveal {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .inv-page {
+      min-height: 100vh;
+      background:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+        linear-gradient(180deg, #f5f0e8 0%, #ede4d0 40%, #f0ead8 100%);
+      padding: 0 0 80px;
+      position: relative;
+    }
+
+    .inv-page::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 28px,
+        rgba(138,106,34,0.04) 28px,
+        rgba(138,106,34,0.04) 29px
+      );
+      pointer-events: none;
+    }
+
+    .inv-content {
+      position: relative; z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .inv-top-ornament { padding-top: 48px; padding-bottom: 16px; }
+    .inv-top-ornament svg { width: 100%; max-width: 320px; height: auto; }
+
+    .gold-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .gold-divider::before,
+    .gold-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .gold-divider .diamond {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .inv-preamble {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(7.5px, 2.2vw, 10px);
+      letter-spacing: 0.35em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .inv-names {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(28px, 9vw, 42px);
+      color: var(--ink);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .inv-ampersand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 12vw, 56px);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+      margin: 6px 0;
+    }
+
+    .inv-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(14px, 4vw, 18px);
+      font-style: italic;
+      color: var(--ink-light);
+      margin: 12px 0 0;
+      opacity: 0.85;
+    }
+
+    .floral-sep {
+      margin: 28px auto;
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      display: block;
+    }
+
+    .inv-body-block {
+      margin: 24px 0;
+      padding: 24px 20px;
+      background: rgba(255,255,255,0.35);
+      border: 1px solid rgba(138,106,34,0.15);
+      position: relative;
+    }
+
+    .inv-body-block::before,
+    .inv-body-block::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: rgba(138,106,34,0.3);
+      border-style: solid;
+    }
+
+    .inv-body-block::before { top: 5px; left: 5px; border-width: 1px 0 0 1px; }
+    .inv-body-block::after  { bottom: 5px; right: 5px; border-width: 0 1px 1px 0; }
+
+    .inv-intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(14px, 3.8vw, 17px);
+      color: var(--ink);
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    .inv-date-section { margin: 28px 0; }
+
+    .inv-date-label {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(7px, 1.8vw, 9px);
+      letter-spacing: 0.4em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .inv-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 7vw, 34px);
+      color: var(--ink);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .inv-date em {
+      display: block;
+      font-size: clamp(12px, 3.5vw, 16px);
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: 4px;
+      opacity: 0.75;
+    }
+
+    .inv-time {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(13px, 4vw, 18px);
+      color: var(--gold-dark);
+      letter-spacing: 0.12em;
+      margin-top: 12px;
+    }
+
+    .inv-location-section { margin: 28px 0; }
+
+    .inv-venue-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(18px, 5.5vw, 26px);
+      color: var(--ink);
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    .inv-venue-addr {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(7px, 1.8vw, 9.5px);
+      letter-spacing: 0.22em;
+      color: var(--ink-light);
+      text-transform: uppercase;
+      margin-top: 8px;
+      line-height: 1.8;
+      opacity: 0.7;
+    }
+
+    .inv-rsvp {
+      margin: 28px 0;
+      padding: 20px;
+      border-top: 1px solid rgba(138,106,34,0.2);
+      border-bottom: 1px solid rgba(138,106,34,0.2);
+    }
+
+    .inv-rsvp-label {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(7px, 1.8vw, 9px);
+      letter-spacing: 0.4em;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .inv-rsvp-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(13px, 3.5vw, 16px);
+      color: var(--ink-light);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .inv-bottom-ornament { margin-top: 40px; }
+
+    .fade-section {
+      opacity: 0;
+      transform: translateY(18px); 
+      transition: opacity 0.8s ease, transform 0.8s ease; 
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* music button */
+    #music-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 50;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.4);
+      background: rgba(18,22,8,0.88);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      -webkit-tap-highlight-color: transparent;
+      color: var(--gold);
+    }
+
+    #music-btn:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 16px rgba(201,168,76,0.2);
+    }
+
+    #music-btn svg { width: 18px; height: 18px; }
+    #music-btn.muted svg.icon-playing { display: none; }
+    #music-btn:not(.muted) svg.icon-muted { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       ENVELOPE
+  ══════════════════════════════════════ -->
+  <div id="stage">
+    <div id="envelope-wrapper" onclick="startOpening()">
+      <div id="envelope"> 
+        <div id="env-base"></div>
+        <div id="cream-insert"></div>
+        <div id="envelope-shadow"></div>
+
+         lower panel 
+        <div class="env-panel" id="panel-left"></div>
+
+         upper panel 
+        <div class="env-panel" id="panel-right"></div>
+
+        <!--<div class="panel-crease" id="crease-left"></div>-->
+        <!--<div class="panel-crease" id="crease-right"></div>-->
+        <div id="seal-glow"></div>
+
+        <div id="wax-seal">
+          <svg viewBox="0 0 90 90" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="waxGold" cx="36%" cy="30%" r="70%">
+                <stop offset="0%"   stop-color="#f2d878"/>
+                <stop offset="25%"  stop-color="#d4a83a"/>
+                <stop offset="58%"  stop-color="#a87822"/>
+                <stop offset="100%" stop-color="#6b4c0a"/>
+              </radialGradient>
+
+              <radialGradient id="waxSpec" cx="32%" cy="26%" r="42%">
+                <stop offset="0%"   stop-color="rgba(255,252,220,0.65)"/>
+                <stop offset="50%"  stop-color="rgba(255,240,160,0.18)"/>
+                <stop offset="100%" stop-color="rgba(255,230,100,0)"/>
+              </radialGradient>
+
+              <radialGradient id="waxEdge" cx="50%" cy="50%" r="50%">
+                <stop offset="50%"  stop-color="rgba(0,0,0,0)"/>
+                <stop offset="100%" stop-color="rgba(0,0,0,0.4)"/>
+              </radialGradient>
+
+              <filter id="sealGlow" x="-35%" y="-35%" width="170%" height="170%">
+                <feDropShadow dx="0" dy="4" stdDeviation="6"  flood-color="rgba(0,0,0,0.7)"/>
+                <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="rgba(200,165,40,0.35)"/>
+              </filter>
+            </defs>
+
+            <path d="
+              M45 5
+              C51 5  57 8  59 13
+              C63 10 69 13 70 18
+              C75 17 80 22 78 28
+              C83 30 85 37 82 42 
+              C87 46 86 53 82 57
+              C84 62 81 68 76 70
+              C76 76 71 80 65 79
+              C62 85 55 87 45 85
+              C35 87 28 85 25 79
+              C19 80 14 76 14 70
+              C9  68  6 62  8 57
+              C4  53  3 46  8 42
+              C5  37  7 30 12 28
+              C10 22 15 17 20 18
+              C21 13 27 10 31 13
+              C33 8  39 5  45 5 Z
+            " fill="url(#waxGold)" filter="url(#sealGlow)"/>
+
+            <path d="
+              M45 5
+              C51 5  57 8  59 13
+              C63 10 69 13 70 18
+              C75 17 80 22 78 28
+              C83 30 85 37 82 42
+              C87 46 86 53 82 57
+              C84 62 81 68 76 70
+              C76 76 71 80 65 79
+              C62 85 55 87 45 85
+              C35 87 28 85 25 79
+              C19 80 14 76 14 70
+              C9  68  6 62  8 57
+              C4  53  3 46  8 42
+              C5  37  7 30 12 28
+              C10 22 15 17 20 18
+              C21 13 27 10 31 13
+              C33 8  39 5  45 5 Z
+            " fill="url(#waxEdge)"/>
+
+            <path d="
+              M45 5
+              C51 5  57 8  59 13
+              C63 10 69 13 70 18
+              C75 17 80 22 78 28
+              C83 30 85 37 82 42
+              C87 46 86 53 82 57
+              C84 62 81 68 76 70
+              C76 76 71 80 65 79
+              C62 85 55 87 45 85
+              C35 87 28 85 25 79
+              C19 80 14 76 14 70
+              C9  68  6 62  8 57
+              C4  53  3 46  8 42
+              C5  37  7 30 12 28
+              C10 22 15 17 20 18
+              C21 13 27 10 31 13
+              C33 8  39 5  45 5 Z
+            " fill="url(#waxSpec)"/>
+
+            <circle cx="45" cy="45" r="29"
+              fill="none"
+              stroke="rgba(255,240,160,0.55)"
+              stroke-width="1"/>
+
+            <circle cx="45" cy="45" r="23"
+              fill="none"
+              stroke="rgba(255,240,160,0.3)"
+              stroke-width="0.7"
+              stroke-dasharray="2.8 3.2"/>
+
+            <circle cx="45" cy="18" r="1.5" fill="rgba(255,248,190,0.8)"/>
+            <circle cx="45" cy="72" r="1.5" fill="rgba(255,248,190,0.8)"/>
+            <circle cx="18" cy="45" r="1.5" fill="rgba(255,248,190,0.8)"/>
+            <circle cx="72" cy="45" r="1.5" fill="rgba(255,248,190,0.8)"/>
+
+            <circle cx="24.5" cy="24.5" r="1.1" fill="rgba(255,248,190,0.5)"/>
+            <circle cx="65.5" cy="24.5" r="1.1" fill="rgba(255,248,190,0.5)"/>
+            <circle cx="24.5" cy="65.5" r="1.1" fill="rgba(255,248,190,0.5)"/>
+            <circle cx="65.5" cy="65.5" r="1.1" fill="rgba(255,248,190,0.5)"/>
+
+            <text
+              x="45" y="48"
+              font-family="Cinzel Decorative, serif"
+              font-size="10.5"
+              fill="rgba(255,250,215,0.95)"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              letter-spacing="1.8"
+            >E &amp; A</text>
+          </svg>
+        </div>
+
+        <div id="screen-notch"></div>
+      </div> 
+
+      <div id="tap-hint">Tap to Open</div> 
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       INVITATION PAGE
+  ══════════════════════════════════════ -->
+  <div id="invitation">
+    <div class="inv-page">
+      <div class="inv-content">
+
+        <div class="inv-top-ornament fade-section">
+          <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <defs>
+              <linearGradient id="fg1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="rgba(138,106,34,0)"/>
+                <stop offset="30%"  stop-color="rgba(138,106,34,0.7)"/>
+                <stop offset="50%"  stop-color="rgba(201,168,76,0.9)"/>
+                <stop offset="70%"  stop-color="rgba(138,106,34,0.7)"/>
+                <stop offset="100%" stop-color="rgba(138,106,34,0)"/>
+              </linearGradient>
+            </defs>
+            <line x1="160" y1="75" x2="160" y2="10" stroke="url(#fg1)" stroke-width="0.8"/>
+            <path d="M160 50 Q140 45 125 55" stroke="rgba(138,106,34,0.6)" stroke-width="0.7"/>
+            <path d="M160 50 Q180 45 195 55" stroke="rgba(138,106,34,0.6)" stroke-width="0.7"/>
+            <path d="M160 38 Q135 30 115 38" stroke="rgba(138,106,34,0.5)" stroke-width="0.7"/>
+            <path d="M160 38 Q185 30 205 38" stroke="rgba(138,106,34,0.5)" stroke-width="0.7"/>
+            <path d="M160 28 Q130 18 105 25" stroke="rgba(138,106,34,0.4)" stroke-width="0.7"/>
+            <path d="M160 28 Q190 18 215 25" stroke="rgba(138,106,34,0.4)" stroke-width="0.7"/>
+            <ellipse cx="120" cy="53" rx="7" ry="4" fill="rgba(138,106,34,0.2)" stroke="rgba(138,106,34,0.5)" stroke-width="0.5" transform="rotate(-20,120,53)"/>
+            <ellipse cx="200" cy="53" rx="7" ry="4" fill="rgba(138,106,34,0.2)" stroke="rgba(138,106,34,0.5)" stroke-width="0.5" transform="rotate(20,200,53)"/>
+            <circle cx="160" cy="12" r="6"   fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.7)" stroke-width="0.8"/>
+            <circle cx="160" cy="12" r="3"   fill="rgba(201,168,76,0.5)"/>
+            <circle cx="160" cy="5"  r="2.5" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.5)" stroke-width="0.5"/>
+            <circle cx="160" cy="19" r="2.5" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.5)" stroke-width="0.5"/>
+            <circle cx="153" cy="12" r="2.5" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.5)" stroke-width="0.5"/>
+            <circle cx="167" cy="12" r="2.5" fill="rgba(201,168,76,0.2)" stroke="rgba(201,168,76,0.5)" stroke-width="0.5"/>
+            <line x1="20" y1="72" x2="300" y2="72" stroke="url(#fg1)" stroke-width="0.5"/>
+          </svg>
+        </div>
+
+        <div class="inv-preamble fade-section">Together with their families</div>
+        <div class="gold-divider fade-section"><div class="diamond"></div></div>
+
+        <h1 class="inv-names fade-section">
+          Ehab
+          <span class="inv-ampersand">&amp;</span>
+          Alia
+        </h1>
+
+        <p class="inv-tagline fade-section">invite you to celebrate their marriage</p>
+
+        <svg class="floral-sep fade-section" viewBox="0 0 280 30" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <line x1="0" y1="15" x2="90" y2="15" stroke="rgba(138,106,34,0.35)" stroke-width="0.5"/>
+          <line x1="190" y1="15" x2="280" y2="15" stroke="rgba(138,106,34,0.35)" stroke-width="0.5"/>
+          <g transform="translate(140,15)">
+            <rect x="-3" y="-3" width="6" height="6" fill="rgba(201,168,76,0.7)" transform="rotate(45)"/>
+            <rect x="-1.5" y="-1.5" width="3" height="3" fill="rgba(201,168,76,0.9)" transform="rotate(45)"/>
+          </g>
+          <circle cx="115" cy="15" r="3" fill="rgba(138,106,34,0.2)" stroke="rgba(138,106,34,0.5)" stroke-width="0.5"/>
+          <circle cx="165" cy="15" r="3" fill="rgba(138,106,34,0.2)" stroke="rgba(138,106,34,0.5)" stroke-width="0.5"/>
+          <path d="M125 15 Q130 10 135 13" stroke="rgba(138,106,34,0.4)" stroke-width="0.6"/>
+          <path d="M155 15 Q150 10 145 13" stroke="rgba(138,106,34,0.4)" stroke-width="0.6"/>
+        </svg>
+
+        <div class="inv-body-block fade-section">
+          <p class="inv-intro">
+            With hearts full of joy and gratitude,<br>
+            we joyfully request the honour of your presence<br>
+            as we begin our journey as husband and wife.
+          </p>
+        </div>
+
+        <div class="inv-date-section fade-section">
+          <div class="inv-date-label">The Celebration</div>
+          <div class="inv-date">
+            Friday, the Twenty-First<br>of June
+            <em>2026</em>
+          </div>
+          <div class="inv-time">5 : 30 in the Evening</div>
+        </div>
+
+        <div class="gold-divider fade-section"><div class="diamond"></div></div>
+
+        <div class="inv-location-section fade-section">
+          <div class="inv-date-label">Place</div>
+          <div class="inv-venue-name">Al Aly Al Azeem Mosque</div>
+          <div class="inv-venue-addr">Almaza, Heliopolis<br>Cairo, Egypt</div>
+        </div>
+
+        <!--<svg class="floral-sep fade-section" viewBox="0 0 280 50" xmlns="http://www.w3.org/2000/svg" fill="none">-->
+        <!--  <defs>-->
+        <!--    <linearGradient id="mg1" x1="0%" y1="0%" x2="100%" y2="0%">-->
+        <!--      <stop offset="0%"   stop-color="rgba(138,106,34,0)"/>-->
+        <!--      <stop offset="50%"  stop-color="rgba(138,106,34,0.45)"/>-->
+        <!--      <stop offset="100%" stop-color="rgba(138,106,34,0)"/>-->
+        <!--    </linearGradient>-->
+        <!--  </defs>-->
+        <!--  <line x1="0" y1="25" x2="280" y2="25" stroke="url(#mg1)" stroke-width="0.6"/>-->
+        <!--  <path d="M10 25 Q60 10 110 20 Q140 25 140 25" stroke="rgba(138,106,34,0.3)" stroke-width="0.7"/>-->
+        <!--  <path d="M270 25 Q220 10 170 20 Q140 25 140 25" stroke="rgba(138,106,34,0.3)" stroke-width="0.7"/>-->
+        <!--  <circle cx="140" cy="25" r="8"   fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.4)" stroke-width="0.7"/>-->
+        <!--  <circle cx="140" cy="25" r="2.5" fill="rgba(201,168,76,0.5)"/>-->
+        <!--</svg>-->
+
+        <!--<div class="inv-rsvp fade-section">-->
+        <!--  <div class="inv-rsvp-label">Kindly Reply By</div>-->
+        <!--  <div class="inv-date" style="font-size:clamp(16px,5vw,22px);">June 7th, 2025</div>-->
+        <!--  <p class="inv-rsvp-text" style="margin-top:12px;">-->
+        <!--    Please send your response to<br>-->
+        <!--    <span style="color:var(--gold-dark);font-style:normal;font-family:'Cinzel',serif;font-size:0.85em;letter-spacing:0.1em;">rsvp@ehabandalia.com</span>-->
+        <!--  </p>-->
+        <!--</div>-->
+
+        <div class="inv-bottom-ornament fade-section">
+          <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <defs>
+              <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="rgba(138,106,34,0)"/>
+                <stop offset="50%"  stop-color="rgba(201,168,76,0.8)"/>
+                <stop offset="100%" stop-color="rgba(138,106,34,0)"/>
+              </linearGradient>
+            </defs>
+            <line x1="20" y1="8" x2="300" y2="8" stroke="url(#bg1)" stroke-width="0.5"/>
+            <path d="M160 8 L160 65" stroke="url(#bg1)" stroke-width="0.8"/>
+            <path d="M160 25 Q130 35 105 30" stroke="rgba(138,106,34,0.5)" stroke-width="0.7"/>
+            <path d="M160 25 Q190 35 215 30" stroke="rgba(138,106,34,0.5)" stroke-width="0.7"/>
+            <path d="M160 42 Q120 56 88 46" stroke="rgba(138,106,34,0.35)" stroke-width="0.7"/>
+            <path d="M160 42 Q200 56 232 46" stroke="rgba(138,106,34,0.35)" stroke-width="0.7"/>
+            <circle cx="85"  cy="47" r="4" fill="rgba(201,168,76,0.1)" stroke="rgba(138,106,34,0.4)" stroke-width="0.6"/>
+            <circle cx="235" cy="47" r="4" fill="rgba(201,168,76,0.1)" stroke="rgba(138,106,34,0.4)" stroke-width="0.6"/>
+            <circle cx="160" cy="68" r="5" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.5)" stroke-width="0.7"/>
+            <circle cx="160" cy="68" r="2.5" fill="rgba(201,168,76,0.45)"/>
+          </svg>
+          <div style="font-family:'Cinzel Decorative',serif;font-size:clamp(18px,5.5vw,24px);color:var(--gold-dark);letter-spacing:0.1em;margin-top:20px;opacity:0.7;">E &amp; A</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(10px,2.8vw,13px);font-style:italic;color:var(--ink-light);letter-spacing:0.15em;margin-top:6px;opacity:0.5;">Forever Begins Here</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Music -->
+  <button id="music-btn" class="muted" onclick="toggleMusic()" aria-label="Toggle music">
+    <svg class="icon-playing" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V6l11 6-11 6z" fill="currentColor"/>
+      <path d="M3 7v10M6 5v14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <svg class="icon-muted" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V6l11 6-11 6z" fill="currentColor" opacity="0.4"/>
+      <line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <audio id="bg-audio" loop preload="none">
+    <source src="soundtrack.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    let opened = false;
+    let isPlaying = false;
+
+    const audio = document.getElementById('bg-audio');
+    const musicBtn = document.getElementById('music-btn');
+
+    /* subtle idle motion */
+    (function idleSeal() {
+      const seal = document.getElementById('wax-seal');
+      let t = 0;
+
+      (function tick() {
+        if (opened || !seal) return;
+        t += 0.04;
+        const scale = 1 + Math.sin(t) * 0.012;
+        seal.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        requestAnimationFrame(tick);
+      })();
+    })();
+
+    function startOpening() {
+      if (opened) return;
+      opened = true;
+
+      const wrapper = document.getElementById('envelope-wrapper');
+      const seal = document.getElementById('wax-seal');
+      const hint = document.getElementById('tap-hint');
+      const insert = document.getElementById('cream-insert');
+
+      hint.style.transition = 'opacity 0.35s ease';
+      hint.style.opacity = '0';
+
+      setTimeout(() => seal.classList.add('dissolve'), 120);
+      setTimeout(() => insert.classList.add('visible'), 220);
+      setTimeout(() => wrapper.classList.add('opening'), 300);
+      setTimeout(() => wrapper.classList.add('fade-out'), 1900);
+
+      setTimeout(() => {
+        const inv = document.getElementById('invitation');
+        inv.style.display = 'block';
+
+        requestAnimationFrame(() => {
+          inv.classList.add('show');
+          setupScrollObserver();
+        });
+
+        wrapper.style.visibility = 'hidden';
+      }, 2550);
+    }
+
+    function setupScrollObserver() {
+      const els = document.querySelectorAll('.fade-section');
+
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, { threshold: 0.12 });
+
+      els.forEach((el, i) => {
+        el.style.transitionDelay = (i * 0.07) + 's';
+        obs.observe(el);
+      });
+    }
+
+    function toggleMusic() {
+      if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        musicBtn.classList.add('muted');
+      } else {
+        audio.play()
+          .then(() => {
+            isPlaying = true;
+            musicBtn.classList.remove('muted');
+          })
+          .catch(() => musicBtn.classList.add('muted'));
+      }
+    }
+  </script>
+</body>
+</html>
