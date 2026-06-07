@@ -1137,7 +1137,7 @@
   </div>
 
   <!-- Music -->
-  <button id="music-btn" class="muted" onclick="toggleMusic()" aria-label="Toggle music">
+  <button id="music-btn"  onclick="toggleMusic()" aria-label="Toggle music">
     <svg class="icon-playing" viewBox="0 0 24 24" fill="none">
       <path d="M9 18V6l11 6-11 6z" fill="currentColor"/>
       <path d="M3 7v10M6 5v14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -1148,13 +1148,13 @@
     </svg>
   </button>
 
-  <audio id="bg-audio" loop preload="none">
+  <audio id="bg-audio" loop autoplay preload="auto">
     <source src="13 jours en france theme - cut.mp3" type="audio/mpeg">
   </audio>
 
   <script>
     let opened = false;
-    let isPlaying = false;
+    let isPlaying = true;
 
     const audio = document.getElementById('bg-audio');
     const musicBtn = document.getElementById('music-btn');
