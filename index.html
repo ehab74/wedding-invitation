@@ -1148,13 +1148,13 @@
     </svg>
   </button>
 
-  <audio id="bg-audio" loop autoplay preload="auto">
+  <audio id="bg-audio" loop preload="none">
     <source src="13 jours en france theme - cut.mp3" type="audio/mpeg">
   </audio>
 
   <script>
     let opened = false;
-    let isPlaying = true;
+    let isPlaying = false;
 
     const audio = document.getElementById('bg-audio');
     const musicBtn = document.getElementById('music-btn');
@@ -1176,6 +1176,13 @@
     function startOpening() {
       if (opened) return;
       opened = true;
+
+      audio.play()
+      .then(() => {
+        isPlaying = true;
+        musicBtn.classList.remove('muted');
+      })
+      .catch(() => musicBtn.classList.add('muted'));
 
       const wrapper = document.getElementById('envelope-wrapper');
       const seal = document.getElementById('wax-seal');
